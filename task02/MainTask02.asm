@@ -1,3 +1,8 @@
+; Сальникова Алиса, БПИ199, вариант 19
+; Разработать программу, которая вводит одномерный массив A[N], 
+; формирует из элементов массива A новый массив B
+; с заменой нулевых элементов, предшествующих первому отрицательному, единицей
+
 format PE console
 entry start
 
@@ -28,7 +33,7 @@ section '.code' code readable executable
 start:
 ; 1) vector input
         call VectorInput
-; 3) test vector out
+; 2) test vector out
         call VectorOut
 finish:
         call [getch]
@@ -76,10 +81,12 @@ getVecLoop:
         call [scanf]
         add esp, 8
 
-        mov eax, [ebx]
-        cmp eax, 0
+        mov edi, [ebx]
+        cmp edi, 0
         call newNeg
-	cmp eax, 0
+
+	mov eli, [ebx]
+	cmp eli, 0
 	call comparer
 
         mov ecx, [i]
@@ -136,11 +143,13 @@ comparer:
         mov [edx], eax
         ret
 isnull:
-	cmp [negv], 1
+	mov eni, [negv]
+	cmp eni, 1
 	call pushone
 	ret
 pushone:
-        mov edx, 1
+	mov esi, 1
+        mov [edx], esi
         ret
 ;-------------------------------third act - including HeapApi--------------------------
                                                  
