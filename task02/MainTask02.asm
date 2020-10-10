@@ -35,6 +35,12 @@ start:
 ; 1) vector input
 call VectorInput
 ; 2) test vector out
+; push 122
+; push 122
+; push strVecElemOut
+; call [printf]
+; add esp, 12
+
 call VectorOut
 finish:
 call [getch]
@@ -61,7 +67,7 @@ jg failedSize
 ; else continue...
 getVector:
 xor ecx, ecx ; ecx = 0
-mov ebx, vec
+mov ebx, vec2
 mov edx, vec2
 
 
@@ -90,6 +96,7 @@ mov edi, [ebx]
 cmp edi, 0
 call newNeg
 
+mov ebx, [tmp]
 mov edi, [ebx]
 cmp edi, 0
 call comparer
@@ -102,8 +109,8 @@ add ebx, 4
 add edx, 4
 jmp getVecLoop
 endInputVector:
-call [printf]
-add esp, 8
+; call [printf]
+; add esp, 8
 ret
 
 ;------------------------------------------------------------------------—
@@ -122,6 +129,7 @@ push dword [ebx]
 push ecx
 push strVecElemOut
 call [printf]
+add esp, 12
 
 mov ecx, [i]
 inc ecx
@@ -146,16 +154,15 @@ mov [negv], 1
 ret
 comparer:
 je isnull
-mov [edx], eax
+; mov dword[ebx], 122
 ret
 isnull:
 mov esi, [negv]
-cmp esi, 1
-call pushone
+cmp esi, 0
+je pushone
 ret
 pushone:
-mov esi, 1
-mov [edx], esi
+mov dword[ebx], 1
 ret
 ;-------------------------------third act - including HeapApi------------------------—
 
