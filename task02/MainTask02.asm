@@ -89,8 +89,6 @@ getVecLoop:
 	add edx, 4
         jmp getVecLoop
 endInputVector:
-        push [min]
-        push strMinVal
         call [printf]
         add esp, 8
         ret
