@@ -17,8 +17,8 @@ int main() {
     int winningFan;
     int lastFans = numberOfFans;
 
-#pragma omp parallel for default(none) shared(maxPoints, winningFan, valentines) for (int j =0;j<numberOfFans;j++)
-    {
+#pragma omp parallel for default(none) shared(maxPoints, winningFan, valentines, numberOfFans)
+    for (int j = 0; j < numberOfFans; j++) {
         int points = 0;
         int fan_id = j;
         if (valentines[fan_id].find("цветы") != std::string::npos) points++;
@@ -34,11 +34,18 @@ int main() {
             points++;
         } else points = 0;
 #pragma omp critical
-        if (maxPoints < points) winningFan = fan_id;
-#pragma omp end critical
-#pragma omp barrier
+        {
+            if (maxPoints < points) winningFan = fan_id;
+        }
+    }
+#pragma omp parallel for default(none) shared(maxPoints, winningFan, valentines, numberOfFans, std::cout)
+    for (int j = 0; j < numberOfFans; j++) {
+        int fan_id = j;
         if (fan_id == winningFan) valentines[fan_id] = "I will go with you";
         else valentines[fan_id] = "I won't go with you";
-        std::cout << "The valentine number " << fan_id + 1 << ". " << valentines[fan_id] << std::endl;
+#pragma omp critical
+        {
+            std::cout << "The valentine number " << fan_id + 1 << ". " << valentines[fan_id] << std::endl;
+        }
     }
 }
