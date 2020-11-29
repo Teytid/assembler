@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <omp.h>
+#include <string>
 
 int main() {
     std::string input;
@@ -15,12 +16,11 @@ int main() {
     int maxPoints = 0;
     int winningFan;
     int lastFans = numberOfFans;
-    omp_set_num_threads(numberOfFans);
 
-#pragma omp parallel shared(maxPoints, winningFan, valentines)
+#pragma omp parallel for default(none) shared(maxPoints, winningFan, valentines) for (int j =0;j<numberOfFans;j++)
     {
         int points = 0;
-        int fan_id = omp_get_thread_num();
+        int fan_id = j;
         if (valentines[fan_id].find("цветы") != std::string::npos) points++;
         if (valentines[fan_id].find("конфеты") != std::string::npos) points++;
         if (valentines[fan_id].find("кино") != std::string::npos) points++;
