@@ -1,0 +1,44 @@
+#include <iostream>
+#include <stdlib.h>
+#include <omp.h>
+
+int main() {
+    std::string input;
+    int numberOfFans;
+    std::cin >> input;
+    std::cin.ignore(32767, '\n');
+    numberOfFans = atoi(input.c_str());
+    std::string *valentines = new std::string[numberOfFans];
+    for (int i = 0; i < numberOfFans; i++) {
+        std::getline(std::cin, valentines[i]);
+    }
+    int maxPoints = 0;
+    int winningFan;
+    int lastFans = numberOfFans;
+    omp_set_num_threads(numberOfFans);
+
+#pragma omp parallel shared(maxPoints, winningFan, valentines)
+    {
+        int points = 0;
+        int fan_id = omp_get_thread_num();
+        if (valentines[fan_id].find("цветы") != std::string::npos) points++;
+        if (valentines[fan_id].find("конфеты") != std::string::npos) points++;
+        if (valentines[fan_id].find("кино") != std::string::npos) points++;
+        if (valentines[fan_id].find("ресторан") != std::string::npos) points++;
+        if (valentines[fan_id].find("подарок") != std::string::npos) points++;
+        if (valentines[fan_id].find("подарки") != std::string::npos) points++;
+        if (valentines[fan_id].find("кафе") != std::string::npos) points++;
+        if (valentines[fan_id].find("суши") != std::string::npos) points++;
+        if (valentines[fan_id].find("кофе") != std::string::npos) points++;
+        if (valentines[fan_id].find("свидание") != std::string::npos) {
+            points++;
+        } else points = 0;
+#pragma omp critical
+        if (maxPoints < points) winningFan = fan_id;
+#pragma omp end critical
+#pragma omp barrier
+        if (fan_id == winningFan) valentines[fan_id] = "I will go with you";
+        else valentines[fan_id] = "I won't go with you";
+        std::cout << "The valentine number " << fan_id + 1 << ". " << valentines[fan_id] << std::endl;
+    }
+}
