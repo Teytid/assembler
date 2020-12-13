@@ -6,10 +6,10 @@
 #include <locale.h>
 
 
-static const int K = 30;			// вместимость улея
+static const int K = 30;			// вместимость улья
 static int N;						// пчел
 static int S;					// количество меда
-static int P;					// кол-во пчел в улее
+static int P;					// кол-во пчел в улье
 static std::vector<bool> flst;		// вылетевшие
 
 std::mutex mtx, mtx2, mtx3;
@@ -27,7 +27,7 @@ void bee(int num) {
         if (num == 0)
         {
             std::unique_lock<std::mutex> lock(mtx);
-            // проверим кол-во меда в улее
+            // проверим кол-во меда в улье
             if (s >= K / 2) // если больше половины или равно
             {
 
@@ -36,7 +36,7 @@ void bee(int num) {
                 std::cout << "В улье " << P << " пчел" << std::endl;
                 std::this_thread::sleep_for(std::chrono::milliseconds(300));
 
-                // проверим кол-во пчел в улее
+                // проверим кол-во пчел в улье
                 if (p < 3)
                 {
                     std::cout << "Медведь съел весь мед " << std::endl;
