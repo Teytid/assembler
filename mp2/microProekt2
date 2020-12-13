@@ -33,13 +33,13 @@ void bee(int num) {
 
                 std::cout << "Медведь " << "пошел за медом" << std::endl;
                 std::this_thread::sleep_for(std::chrono::milliseconds(300));
-                std::cout << "В улее " << P << " пчел" << std::endl;
+                std::cout << "В улье " << P << " пчел" << std::endl;
                 std::this_thread::sleep_for(std::chrono::milliseconds(300));
 
                 // проверим кол-во пчел в улее
                 if (p < 3)
                 {
-                    std::cout << "Медведь сьел весь мед " << std::endl;
+                    std::cout << "Медведь съел весь мед " << std::endl;
                     S = 0;
                     std::this_thread::sleep_for(std::chrono::milliseconds(500));
                 }
@@ -68,14 +68,14 @@ void bee(int num) {
                 {
                     std::cout << "Пчела " << num << " принесла мед" << std::endl;
                     P++; S++;
-                    std::cout << "В улее " << S << " меда" << std::endl;
+                    std::cout << "В улье " << S << " меда" << std::endl;
                     std::this_thread::sleep_for(std::chrono::milliseconds(500));
                 }
                 else
                 {
                     std::cout << "Пчела " << num << " прилетела" << std::endl;
                     P++;
-                    std::cout << "В улее " << S << " меда" << std::endl;
+                    std::cout << "В улье " << S << " меда" << std::endl;
                     std::this_thread::sleep_for(std::chrono::milliseconds(500));
                 }
                 lock.unlock();
@@ -85,7 +85,7 @@ void bee(int num) {
             }
 
 
-            if (s == K) // проверим на максимум меда в улее
+            if (s == K) // проверим на максимум меда в улье
             {
                 std::unique_lock<std::mutex> lock(mtx);
                 std::this_thread::sleep_for(std::chrono::milliseconds(500));
@@ -94,15 +94,15 @@ void bee(int num) {
             }
 
 
-            // проверим колво пчел в улее
+            // проверим колво пчел в улье
 
             if (p >= 2) // если больше 1 пчелы
             {
-                if (s != K) // если  надо лететь
+                if (s != K) // если надо лететь
                 {
                     std::unique_lock<std::mutex> lock(mtx);
                     // летим за медом
-                    std::cout << "В улее " << P-- << " пчел" << std::endl;
+                    std::cout << "В улье " << P-- << " пчел" << std::endl;
                     std::this_thread::sleep_for(std::chrono::milliseconds(500));
                     std::cout << "Пчела " << num << " полетела за медом" << std::endl;
                     std::this_thread::sleep_for(std::chrono::milliseconds(500));
@@ -142,13 +142,16 @@ int main() {
     setlocale(LC_ALL, "RUS");
 
     N = 0;
+    std::cout << "Введите кол-во пчел N : " << std::endl;
+    std::cin >> N;
     while (N <= 3)
     {
-        std::cout << "Введите кол-во пчел N : ";
+        std::cout << "Неправильное количество пчел! Должно быть больше 3!" << std::endl;
+        std::cout << "Введите кол-во пчел N : " << std::endl;
         std::cin >> N;
     }
 
-    P = N; // изначально пчелы все в улее
+    P = N; // изначально пчелы все в улье
     // запускаем инициализацию
     std::thread work(init);
     work.join();
